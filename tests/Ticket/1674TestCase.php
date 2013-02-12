@@ -30,7 +30,7 @@
  * @since       1.0
  * @version     $Revision$
  */
-class Doctrine_Ticket_1674_TestCase extends Doctrine_UnitTestCase 
+class Doctrine_Ticket_1674_TestCase extends Doctrine_UnitTestCase
 {
     public function testTest()
     {
@@ -42,9 +42,10 @@ class Doctrine_Ticket_1674_TestCase extends Doctrine_UnitTestCase
             ->limit(1)
             ->execute();
 
-        $xml = $users->exportTo('xml'); 
-        $this->assertEqual($xml, '<?xml version="1.0" encoding="utf-8"?>
-<data><User id="4" type="0" email_id="1"><name>zYne</name><loginname></loginname><password></password><created></created><updated></updated><Phonenumber><Phonenumber id="2" entity_id="4"><phonenumber>123 123</phonenumber><Entity></Entity></Phonenumber></Phonenumber></User></data>
-');
+        $xml = $users->exportTo('xml');
+        $xmlFile = dirname(__FILE__).'/ticket_1674.xml';
+        file_put_contents($xmlFile, $xml);
+        $this->assertEqual($xml, file_get_contents($xmlFile));
+        unlink($xmlFile);
     }
 }
