@@ -572,6 +572,27 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
     public function preDqlSelect($event)
     { }
 
+   /**
+    * Empty template method to provide Record classes with the ability to alter DQL delete
+    * queries at runtime
+    */
+    public function postDqlDelete($event)
+    { }
+
+    /**
+    * Empty template method to provide Record classes with the ability to alter DQL delete
+    * queries at runtime
+    */
+    public function postDqlSelect($event)
+    { }
+
+    /**
+    * Empty template method to provide Record classes with the ability to alter DQL delete
+    * queries at runtime
+    */
+    public function postDqlUpdate($event)
+    { }
+     
     /**
      * Empty template method to provide Record classes with the ability to alter DQL update
      * queries at runtime
