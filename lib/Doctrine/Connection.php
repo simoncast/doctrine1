@@ -469,7 +469,10 @@ abstract class Doctrine_Connection extends Doctrine_Configurable implements Coun
 
         $e     = explode(':', $this->options['dsn']);
         $found = false;
-        $class = $this->getOption('pdo_class');
+        $class = $this->getOption('pdo_class');        
+        if(!$class) {
+            $class = 'PDO';
+        }
         if (extension_loaded('pdo')) {
             if (in_array($e[0], self::getAvailableDrivers())) {
                 try {
