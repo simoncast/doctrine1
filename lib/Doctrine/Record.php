@@ -1847,7 +1847,7 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
             switch ($type) {
                 case 'array':
                 case 'object':
-                    $a[$field] = serialize($this->_data[$field]);
+                    $a[$field] = base64_encode(serialize($this->_data[$field]));
                     break;
                 case 'gzip':
                     $a[$field] = gzcompress($this->_data[$field],5);
