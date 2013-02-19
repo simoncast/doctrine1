@@ -206,7 +206,7 @@ abstract class Doctrine_Record_Generator extends Doctrine_Record_Abstract
       	if ($this->_initialized) {
       	    return false;
       	}
-        
+          
         $this->_initialized = true;
 
         $this->initOptions();
@@ -227,12 +227,12 @@ abstract class Doctrine_Record_Generator extends Doctrine_Record_Abstract
 
         // check that class doesn't exist (otherwise we cannot create it)
         if ($this->_options['generateFiles'] === false && class_exists($this->_options['className'])) {
-            $this->_table = Doctrine_Core::getTable($this->_options['className']);
+            $this->_table = Doctrine_Core::getTable($this->_options['className']);            
+            $this->buildRelation();
             return false;
         }
-
+        
         $this->buildTable();
-
         $fk = $this->buildForeignKeys($this->_options['table']);
         if(count($fk))
         {
@@ -323,9 +323,10 @@ abstract class Doctrine_Record_Generator extends Doctrine_Record_Abstract
                 $this->_table->addTemplate(get_class($child), $child);
 
                 $child->setInvoker($this);
-                $child->setTable($this->_table);
+                $child->setTable($this->_table);    
+                $child->setUp();             
                 $child->setTableDefinition();
-                $child->setUp();
+                   
             } else {
                 $this->_table->addGenerator($child, get_class($child));
                 $child->initialize($this->_table);
@@ -547,7 +548,8 @@ abstract class Doctrine_Record_Generator extends Doctrine_Record_Abstract
           $options = $template->getOriginalOptions();          
           // build actAs statement
           $definition['actAs'][get_class($template)] = count($options) ? $options : null;
-        }        
+        }
+        
         return $definition;
     }
     

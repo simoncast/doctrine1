@@ -404,6 +404,11 @@ class Doctrine_Import_Builder extends Doctrine_Builder
     {
         $ret = array();
         $i = 0;
+        
+        if (isset($definition['indexBy']) && !empty($definition['indexBy'])) {
+            $ret[$i] = $this->buildIndexBy($definition['indexBy']);
+            $i++;
+        }        
 
         if (isset($definition['relations']) && is_array($definition['relations']) && ! empty($definition['relations'])) {
             foreach ($definition['relations'] as $name => $relation) {
@@ -425,6 +430,9 @@ class Doctrine_Import_Builder extends Doctrine_Builder
                 if (isset($relation['refClass'])) {
                     $a[] = '\'refClass\' => ' . $this->varExport($relation['refClass']);
                 }
+                else if(isset($relation['refTable'])) {
+                    $a[] = '\'refClass\' => ' . $this->varExport($relation['refTable']->getComponentName());
+                }                
                 
                 if (isset($relation['refClassRelationAlias'])) {
                     $a[] = '\'refClassRelationAlias\' => ' . $this->varExport($relation['refClassRelationAlias']);
@@ -517,6 +525,19 @@ class Doctrine_Import_Builder extends Doctrine_Builder
         return $build;
     }
 
+    /**
+     * buildIndexBz
+     *
+     * @param string $array
+     * @return void
+     */
+    public function buildIndexBy($indexBy)
+    {
+        $build = "        \$this->bindQueryParts(array('indexBy' => " . $this->varExport($indexBy) . "));" . PHP_EOL;
+
+        return $build;
+    }
+    
     /**
      * buildColumns
      *
@@ -1085,7 +1106,7 @@ class Doctrine_Import_Builder extends Doctrine_Builder
         $code = sprintf("    /**
      * Returns an instance of this class.
      *
-     * @return object %s
+     * @return %s
      */
     public static function getInstance()
     {
